@@ -1,13 +1,12 @@
 const inquirer = require("inquirer");
-const mysql = require("mysql2");
 const cTable = require("console.table");
+const db = require("../db/db");
 
 // Declared first question on start
 const askFirstQuestion = async () => {
   let thisAnswer;
 
-  console.log("");
-  console.log("");
+  console.log("\n\n");
 
   await inquirer
     .prompt([
@@ -31,8 +30,7 @@ const askFirstQuestion = async () => {
       thisAnswer = answer.options;
     });
 
-  console.log("");
-  console.log("");
+  console.log("\n\n");
 
   return thisAnswer;
 };
@@ -94,47 +92,15 @@ const constructEmployeeChoices = (roles) => {
   // return an array of employee choices
 };
 
-const db = mysql.createConnection(
-  {
-    host: "localhost",
-    // MySQL username,
-    user: "root",
-    // MySQL password
-    password: "Password123!!",
-    database: "company_db",
-  },
-  console.log(`Connected to the company_db database.`)
-);
-
-const start = async () => {
-  // prompt question and get answer (action)
-  let mainMenuAnswer = await askFirstQuestion();
-
-  if (mainMenuAnswer == "View all departments") displayDepartments();
-  if (mainMenuAnswer == "View all roles") displayRoles();
-  if (mainMenuAnswer == "View all employees") displayEmployees();
-
-  if ("addDepartment") {
-    // prompt department questions (name) and get answers
-    // construct mysql insert query
-    // execute mysql query
-  }
-  if ("addRole") {
-    // get departments from DB
-    // pass the departments to a choice constructor function
-    // prompt question to select department, title, salary and get answers
-    // construct mysql insert query for role
-    // execute mysql query
-  }
-  if ("addEmployee") {
-    // get roles from DB
-    // get employees from DB
-    // pass the roles to a choice constructor function
-    // pass the employees to a choice constructor function
-    // prompt question to select role, select manager, first name, last name and get answers
-    // construct mysql insert query for employee
-    // execute mysql query
-  }
+module.exports = {
+  askFirstQuestion,
+  displayDepartments,
+  displayRoles,
+  displayEmployees,
+  getDepartments,
+  getRoles,
+  getEmployees,
+  constructDepartmentChoices,
+  constructRoleChoices,
+  constructEmployeeChoices,
 };
-
-start();
