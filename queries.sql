@@ -4,7 +4,7 @@ USE company_db;
 SELECT * FROM department;
 
 -- view all roles
-SELECT role.id, role.title, role.salary, department.name FROM role JOIN department ON role.departmentId = department.id ORDER BY department.name;
+SELECT role.id, role.title, role.salary, department.name FROM role JOIN department ON role.department_id = department.id ORDER BY department.name;
 
 -- view all employees
 SELECT employee_role.firstName, employee_role.lastName, title, salary, name

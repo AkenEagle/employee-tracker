@@ -2,8 +2,12 @@ const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const cTable = require("console.table");
 
+// Declared first question on start
 const askFirstQuestion = async () => {
   let thisAnswer;
+
+  console.log("");
+  console.log("");
 
   await inquirer
     .prompt([
@@ -27,6 +31,9 @@ const askFirstQuestion = async () => {
       thisAnswer = answer.options;
     });
 
+  console.log("");
+  console.log("");
+
   return thisAnswer;
 };
 
@@ -40,7 +47,13 @@ const displayDepartments = () => {
 
 const displayRoles = () => {
   // execute mysql query
-  // log/table roles
+  db.query(
+    "SELECT role.id, role.title, department.name AS department, role.salary FROM role JOIN department ON role.department_id = department.id ORDER BY department.name",
+    (err, results) => {
+      // log/table departments
+      console.table(results);
+    }
+  );
 };
 
 const displayEmployees = () => {
@@ -88,17 +101,11 @@ const db = mysql.createConnection(
 );
 
 const start = async () => {
-  // declare one question with list of actions
   // prompt question and get answer (action)
   let mainMenuAnswer = await askFirstQuestion();
 
-  // insert if blocks for all actions
-  // if displayDepartments()
   if (mainMenuAnswer == "View all departments") displayDepartments();
-
-  // if displayRoles()
-  if (mainMenuAnswer.options == "View all roles") {
-  }
+  if (mainMenuAnswer == "View all roles") displayRoles();
 
   // if displayEmployees()
   if (mainMenuAnswer.options == "View all employees") {
