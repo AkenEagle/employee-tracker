@@ -59,7 +59,7 @@ const displayRoles = () => {
 const displayEmployees = () => {
   // execute mysql query
   db.query(
-    "SELECT employee.firstName, employee.lastName, title, salary, name FROM employee role LEFT JOIN role ON employee.role_id=role.id LEFT JOIN department ON role.department_id=department.id",
+    "SELECT employee_role.first_name, employee_role.last_name, title , salary,  name AS department,  CONCAT (employee_manager.first_name, ' ', employee_manager.last_name) AS manager FROM employee employee_role LEFT JOIN role ON employee_role.role_id = role.id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employee employee_manager ON employee_role.manager_id = employee_manager.id",
     (err, results) => {
       // log/table employees
       console.table(results);
