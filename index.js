@@ -50,7 +50,7 @@ const displayRoles = () => {
   db.query(
     "SELECT role.id, role.title, department.name AS department, role.salary FROM role JOIN department ON role.department_id = department.id ORDER BY department.name",
     (err, results) => {
-      // log/table departments
+      // log/table roles
       console.table(results);
     }
   );
@@ -58,7 +58,13 @@ const displayRoles = () => {
 
 const displayEmployees = () => {
   // execute mysql query
-  // log/table employees
+  db.query(
+    "SELECT employee.firstName, employee.lastName, title, salary, name FROM employee role LEFT JOIN role ON employee.role_id=role.id LEFT JOIN department ON role.department_id=department.id",
+    (err, results) => {
+      // log/table employees
+      console.table(results);
+    }
+  );
 };
 
 const getDepartments = () => {
@@ -106,10 +112,7 @@ const start = async () => {
 
   if (mainMenuAnswer == "View all departments") displayDepartments();
   if (mainMenuAnswer == "View all roles") displayRoles();
-
-  // if displayEmployees()
-  if (mainMenuAnswer.options == "View all employees") {
-  }
+  if (mainMenuAnswer == "View all employees") displayEmployees();
 
   if ("addDepartment") {
     // prompt department questions (name) and get answers

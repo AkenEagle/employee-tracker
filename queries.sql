@@ -12,7 +12,7 @@ FROM employee employee_role
 LEFT JOIN role 
 ON employee_role.roleId=role.id 
 LEFT JOIN department
-ON role.departmentId=department.id;
+ON role.department_id=department.id;
 
 -- insert department
 INSERT INTO department (name) VALUES ('Finance')
