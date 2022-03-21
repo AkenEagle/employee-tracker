@@ -4,35 +4,25 @@ const db = require("../db/db");
 
 // Declared first question on start
 const askFirstQuestion = async () => {
-  let thisAnswer;
+  const questions = [
+    {
+      name: "options",
+      message: "What do you want to do?",
+      type: "list",
+      choices: [
+        "View all departments",
+        "View all roles",
+        "View all employees",
+        "Add a department",
+        "Add a role",
+        "Add an employee",
+        "Update an employee role",
+      ],
+    },
+  ];
 
-  console.log("\n\n");
-
-  await inquirer
-    .prompt([
-      {
-        name: "options",
-        message: "What do you want to do?",
-        type: "list",
-        choices: [
-          "View all departments",
-          "View all roles",
-          "View all employees",
-          "Add a department",
-          "Add a role",
-          "Add an employee",
-          "Update an employee role",
-        ],
-      },
-    ])
-
-    .then((answer) => {
-      thisAnswer = answer.options;
-    });
-
-  console.log("\n\n");
-
-  return thisAnswer;
+  const answer = await inquirer.prompt(questions);
+  return answer;
 };
 
 const displayDepartments = () => {
@@ -65,19 +55,41 @@ const displayEmployees = () => {
   );
 };
 
-const getDepartments = () => {
+const addDepartment = () => {
+  const getDepartments = () => {
+    // execute mysql query
+    // return departments
+  };
+
+  // prompt department questions (name) and get answers
+  // construct mysql insert query
   // execute mysql query
-  // return departments
 };
 
-const getRoles = () => {
+const addRole = () => {
+  const getRoles = () => {
+    // execute mysql query
+    // return roles
+  };
+  // get departments from DB
+  // pass the departments to a choice constructor function
+  // prompt question to select department, title, salary and get answers
+  // construct mysql insert query for role
   // execute mysql query
-  // return roles
 };
 
-const getEmployees = () => {
+const addEmployee = () => {
+  const getEmployees = () => {
+    // execute mysql query
+    // return employees
+  };
+  // get roles from DB
+  // get employees from DB
+  // pass the roles to a choice constructor function
+  // pass the employees to a choice constructor function
+  // prompt question to select role, select manager, first name, last name and get answers
+  // construct mysql insert query for employee
   // execute mysql query
-  // return employees
 };
 
 const constructDepartmentChoices = (departments) => {
@@ -97,10 +109,10 @@ module.exports = {
   displayDepartments,
   displayRoles,
   displayEmployees,
-  getDepartments,
-  getRoles,
-  getEmployees,
+  addRole,
+  addEmployee,
   constructDepartmentChoices,
   constructRoleChoices,
   constructEmployeeChoices,
+  addDepartment,
 };
