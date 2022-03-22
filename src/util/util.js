@@ -111,6 +111,7 @@ const addRole = async () => {
   // Ask for which department to add this role
   const departmentQuery = "SELECT name FROM department";
   const departments = await getResults(departmentQuery);
+  console.log(departments);
   const departmentQuestion = [
     {
       name: "choice",
@@ -133,14 +134,78 @@ const addRole = async () => {
   await sleep();
 };
 
-const addEmployee = () => {
+const addEmployee = async () => {
   // get roles from DB
+  const rolesQuery = "SELECT * FROM role";
+  const rolesResults = await getResults(rolesQuery);
+
   // get employees from DB
+  const employeesQuery = "SELECT * FROM employee";
+  const employees = await getResults(employeesQuery);
+
   // pass the roles to a choice constructor function
+  const roles = rolesResults.map((role) => {
+    return {
+      name: role.title,
+      value: role.id,
+    };
+  });
+
+  const rolesQuestion = [
+    {
+      name: "choice",
+      message: "Choose a role for this employee:",
+      type: "list",
+      choices: roles,
+    },
+  ];
+
   // pass the employees to a choice constructor function
+  const managers = employees.map((employee) => {
+    return {
+      name: `${employee.first_name} ${employee.last_name}`,
+      value: employee.id,
+    };
+  });
+
+  const managerQuestion = [
+    {
+      name: "choice",
+      message: "Choose a manager for this employee:",
+      type: "list",
+      choices: managers,
+    },
+  ];
+
+  const firstNameQuestion = [
+    {
+      type: "input",
+      name: "choice",
+      message: "Enter employee's First Name:",
+    },
+  ];
+
+  const lastNameQuestion = [
+    {
+      type: "input",
+      name: "choice",
+      message: "Enter employee's Last Name:",
+    },
+  ];
   // prompt question to select role, select manager, first name, last name and get answers
+  const role = await inquirer.prompt(rolesQuestion);
+  const manager = await inquirer.prompt(managerQuestion);
+  const firstName = await inquirer.prompt(firstNameQuestion);
+  const lastName = await inquirer.prompt(lastNameQuestion);
+
+  console.log(`Employee ${firstName.choice} ${lastName.choice} added`);
+
   // construct mysql insert query for employee
-  // execute mysql query
+  db.query(
+    `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${firstName.choice}", "${lastName.choice}", ${role.choice}, ${manager.choice})`
+  );
+
+  sleep();
 };
 
 module.exports = {
