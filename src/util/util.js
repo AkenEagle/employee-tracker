@@ -17,53 +17,80 @@ const askFirstQuestion = async () => {
         "Add a role",
         "Add an employee",
         "Update an employee role",
+        "Exit",
       ],
     },
   ];
 
   const answer = await inquirer.prompt(questions);
-  return answer;
+  return answer.options;
 };
 
-const displayDepartments = () => {
-  // execute mysql query
-  db.query("SELECT * FROM department", (err, results) => {
-    // log/table departments
-    console.table(results);
-  });
-};
+const displayDepartments = async () => {
+  const query = "SELECT * FROM department";
 
-const displayRoles = () => {
-  // execute mysql query
-  db.query(
-    "SELECT role.id, role.title, department.name AS department, role.salary FROM role JOIN department ON role.department_id = department.id ORDER BY department.name",
-    (err, results) => {
-      // log/table roles
-      console.table(results);
-    }
+  const results = await new Promise((resolve, reject) =>
+    db.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    })
   );
+  console.log("\n\n");
+  console.table(results);
+};
+
+const displayRoles = async () => {
+  const query =
+    "SELECT role.id, role.title, department.name AS department, role.salary FROM role JOIN department ON role.department_id = department.id ORDER BY department.name";
+
+  const results = await new Promise((resolve, reject) =>
+    db.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    })
+  );
+  console.log("\n\n");
+  console.table(results);
 };
 
 const displayEmployees = () => {
-  // execute mysql query
-  db.query(
-    "SELECT employee_role.first_name, employee_role.last_name, title , salary,  name AS department,  CONCAT (employee_manager.first_name, ' ', employee_manager.last_name) AS manager FROM employee employee_role LEFT JOIN role ON employee_role.role_id = role.id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employee employee_manager ON employee_role.manager_id = employee_manager.id",
-    (err, results) => {
-      // log/table employees
-      console.table(results);
-    }
+  const query =
+    "SELECT employee_role.first_name, employee_role.last_name, title , salary,  name AS department,  CONCAT (employee_manager.first_name, ' ', employee_manager.last_name) AS manager FROM employee employee_role LEFT JOIN role ON employee_role.role_id = role.id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employee employee_manager ON employee_role.manager_id = employee_manager.id";
+
+  const results = await new Promise((resolve, reject) =>
+    db.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    })
   );
+  console.log("\n\n");
+  console.table(results);
 };
 
-const addDepartment = () => {
-  const getDepartments = () => {
-    // execute mysql query
-    // return departments
-  };
+const addDepartment = async () => {
+  const question = [
+    {
+      type: "input",
+      name: "department",
+      message: "Enter department name:",
+    },
+  ];
 
-  // prompt department questions (name) and get answers
-  // construct mysql insert query
+  const answer = await inquirer.prompt(question);
+
   // execute mysql query
+  db.query(`INSERT INTO department (name) VALUES ('${answer}')`);
+
+  console.log(`Department ${answer} succesfully added.`);
 };
 
 const addRole = () => {

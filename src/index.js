@@ -9,16 +9,24 @@ const {
 } = require("./util/util");
 
 const start = async () => {
-  // prompt question and get answer (action)
-  let mainMenuAnswer = await askFirstQuestion();
+  let appRunning = true;
 
-  // handle function based on the answer
-  if (mainMenuAnswer == "View all departments") displayDepartments();
-  if (mainMenuAnswer == "View all roles") displayRoles();
-  if (mainMenuAnswer == "View all employees") displayEmployees();
-  if (mainMenuAnswer == "Add a department") addDepartment();
-  if (mainMenuAnswer == "addRole") addRole();
-  if (mainMenuAnswer == "addEmployee") addEmployee();
+  while (appRunning) {
+    // prompt question and get answer (action)
+    let mainMenuAnswer = await askFirstQuestion();
+
+    // handle function based on the answer
+    if (mainMenuAnswer == "View all departments") await displayDepartments();
+    if (mainMenuAnswer == "View all roles") displayRoles();
+    if (mainMenuAnswer == "View all employees") displayEmployees();
+    if (mainMenuAnswer == "Add a department") addDepartment();
+    if (mainMenuAnswer == "Add a Role") addRole();
+    if (mainMenuAnswer == "Add an Employee") addEmployee();
+    if (mainMenuAnswer == "Exit") {
+      appRunning = false;
+      console.log("\nAu revoir!");
+    }
+  }
 };
 
 start();
