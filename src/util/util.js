@@ -36,9 +36,9 @@ const askFirstQuestion = async () => {
         "View all roles",
         "View all employees",
         "Add a department",
-        "Add a role",
-        "Add an employee",
-        "Update an employee role",
+        "Add a Role",
+        "Add an Employee",
+        "Update an Employee Role",
         "Exit",
       ],
     },
@@ -84,26 +84,56 @@ const addDepartment = async () => {
   // execute mysql query
   db.query(`INSERT INTO department (name) VALUES ('${answer.department}')`);
   console.log(`Department ${answer.department} succesfully added.`);
+  await sleep(2000);
+};
+
+const addRole = async () => {
+  // Role question
+  const roleQuestion = [
+    {
+      type: "input",
+      name: "role",
+      message: "Enter role title:",
+    },
+  ];
+  const roleTitle = await inquirer.prompt(roleQuestion);
+
+  // Salary question
+  const salaryQuestion = [
+    {
+      type: "input",
+      name: "salary",
+      message: "Enter salary amount:",
+    },
+  ];
+  const salaryAmount = await inquirer.prompt(salaryQuestion);
+
+  // Ask for which department to add this role
+  const departmentQuery = "SELECT name FROM department";
+  const departments = await getResults(departmentQuery);
+  const departmentQuestion = [
+    {
+      name: "choice",
+      message: "Choose department for this role:",
+      type: "list",
+      choices: departments,
+    },
+  ];
+  const department = await inquirer.prompt(departmentQuestion);
+  const departmentIdQuery = `SELECT id FROM department WHERE name = "${department.choice}"`;
+  const departmentId = await getResults(departmentIdQuery);
+
+  // Add role in DB
+  db.query(
+    `INSERT INTO role (title, salary, department_id) VALUES ("${roleTitle.role}", ${salaryAmount.salary}, ${departmentId[0].id})`
+  );
+  console.log(
+    `Role ${roleTitle.role} with salary ${salaryAmount.salary} added to department ${department.choice}`
+  );
   await sleep();
 };
 
-const addRole = () => {
-  const getRoles = () => {
-    // execute mysql query
-    // return roles
-  };
-  // get departments from DB
-  // pass the departments to a choice constructor function
-  // prompt question to select department, title, salary and get answers
-  // construct mysql insert query for role
-  // execute mysql query
-};
-
 const addEmployee = () => {
-  const getEmployees = () => {
-    // execute mysql query
-    // return employees
-  };
   // get roles from DB
   // get employees from DB
   // pass the roles to a choice constructor function
