@@ -179,7 +179,7 @@ const addEmployee = async () => {
       name: "choice",
       message: "Choose a manager for this employee:",
       type: "list",
-      choices: managers,
+      choices: [{ name: "None", value: null }, ...managers],
     },
   ];
 
@@ -214,6 +214,8 @@ const addEmployee = async () => {
   sleep();
 };
 
+const updateEmployeeRole = async () => {};
+
 module.exports = {
   askFirstQuestion,
   displayDepartments,
@@ -222,4 +224,5 @@ module.exports = {
   addRole,
   addEmployee,
   addDepartment,
+  updateEmployeeRole,
 };

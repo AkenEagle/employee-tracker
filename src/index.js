@@ -6,6 +6,7 @@ const {
   addDepartment,
   addRole,
   addEmployee,
+  updateEmployeeRole,
 } = require("./util/util");
 
 const start = async () => {
@@ -22,6 +23,7 @@ const start = async () => {
     if (mainMenuAnswer == "Add a department") await addDepartment();
     if (mainMenuAnswer == "Add a Role") await addRole();
     if (mainMenuAnswer == "Add an Employee") await addEmployee();
+    if (mainMenuAnswer == "Update an Employee Role") await updateEmployeeRole();
     if (mainMenuAnswer == "Exit") {
       appRunning = false;
       console.log("\nAu revoir!");
