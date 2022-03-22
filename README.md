@@ -1,6 +1,6 @@
 # **Employee Tracker** ![MIT](https://img.shields.io/github/license/AkenEagle/employee-tracker?color=teal)
 
-![Preview](/assets/images/preview.png)
+![Preview]()
 
 ## Table of Contents
 
