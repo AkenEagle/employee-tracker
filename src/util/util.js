@@ -98,9 +98,10 @@ const addDepartment = async () => {
   const answer = await inquirer.prompt(question);
 
   // execute mysql query
-  db.query(`INSERT INTO department (name) VALUES ('${answer}')`);
+  db.query(`INSERT INTO department (name) VALUES ('${answer.department}')`);
 
-  console.log(`Department ${answer} succesfully added.`);
+  console.log("\n\n");
+  console.log(`Department ${answer.department} succesfully added.`);
   await sleep();
 };
 

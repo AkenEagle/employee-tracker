@@ -17,11 +17,11 @@ const start = async () => {
 
     // handle function based on the answer
     if (mainMenuAnswer == "View all departments") await displayDepartments();
-    if (mainMenuAnswer == "View all roles") displayRoles();
-    if (mainMenuAnswer == "View all employees") displayEmployees();
-    if (mainMenuAnswer == "Add a department") addDepartment();
-    if (mainMenuAnswer == "Add a Role") addRole();
-    if (mainMenuAnswer == "Add an Employee") addEmployee();
+    if (mainMenuAnswer == "View all roles") await displayRoles();
+    if (mainMenuAnswer == "View all employees") await displayEmployees();
+    if (mainMenuAnswer == "Add a department") await addDepartment();
+    if (mainMenuAnswer == "Add a Role") await addRole();
+    if (mainMenuAnswer == "Add an Employee") await addEmployee();
     if (mainMenuAnswer == "Exit") {
       appRunning = false;
       console.log("\nAu revoir!");
