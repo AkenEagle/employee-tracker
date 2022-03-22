@@ -214,7 +214,62 @@ const addEmployee = async () => {
   sleep();
 };
 
-const updateEmployeeRole = async () => {};
+const updateEmployeeRole = async () => {
+  // get employees
+  const employeesQuery = "SELECT * FROM employee";
+  const employeesData = await getResults(employeesQuery);
+
+  //get roles
+  const rolesQuery = "SELECT * FROM role";
+  const rolesData = await getResults(rolesQuery);
+
+  // construct employees question
+  const employees = employeesData.map((employee) => {
+    return {
+      name: `${employee.first_name} ${employee.last_name}`,
+      value: employee.id,
+    };
+  });
+
+  const employeesQuestion = [
+    {
+      name: "choice",
+      message: "Which employee's role do you want to update?",
+      type: "list",
+      choices: employees,
+    },
+  ];
+
+  // construct roles question
+  const roles = rolesData.map((role) => {
+    return {
+      name: role.title,
+      value: role.id,
+    };
+  });
+
+  const rolesQuestion = [
+    {
+      name: "choice",
+      message: "What role do you want to assign to this emploee?",
+      type: "list",
+      choices: roles,
+    },
+  ];
+
+  // prompt employees question and get answer
+  const employee = await inquirer.prompt(employeesQuestion);
+
+  // prompt roles question and get answer
+  const role = await inquirer.prompt(rolesQuestion);
+
+  // create mysql query
+  db.query(
+    `UPDATE employee SET role_id = ${role.choice} WHERE id = ${employee.choice}`
+  );
+
+  sleep();
+};
 
 module.exports = {
   askFirstQuestion,
