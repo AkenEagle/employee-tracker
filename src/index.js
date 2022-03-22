@@ -25,6 +25,7 @@ const start = async () => {
     if (mainMenuAnswer == "Exit") {
       appRunning = false;
       console.log("\nAu revoir!");
+      process.exit();
     }
   }
 };

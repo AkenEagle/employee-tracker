@@ -2,6 +2,13 @@ const inquirer = require("inquirer");
 const cTable = require("console.table");
 const db = require("../db/db");
 
+// Used to wait 2 secs before returning to menu
+const sleep = () => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, 2000);
+  });
+};
+
 // Declared first question on start
 const askFirstQuestion = async () => {
   const questions = [
@@ -40,6 +47,7 @@ const displayDepartments = async () => {
   );
   console.log("\n\n");
   console.table(results);
+  await sleep();
 };
 
 const displayRoles = async () => {
@@ -57,9 +65,10 @@ const displayRoles = async () => {
   );
   console.log("\n\n");
   console.table(results);
+  await sleep();
 };
 
-const displayEmployees = () => {
+const displayEmployees = async () => {
   const query =
     "SELECT employee_role.first_name, employee_role.last_name, title , salary,  name AS department,  CONCAT (employee_manager.first_name, ' ', employee_manager.last_name) AS manager FROM employee employee_role LEFT JOIN role ON employee_role.role_id = role.id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employee employee_manager ON employee_role.manager_id = employee_manager.id";
 
@@ -74,6 +83,7 @@ const displayEmployees = () => {
   );
   console.log("\n\n");
   console.table(results);
+  await sleep();
 };
 
 const addDepartment = async () => {
@@ -91,6 +101,7 @@ const addDepartment = async () => {
   db.query(`INSERT INTO department (name) VALUES ('${answer}')`);
 
   console.log(`Department ${answer} succesfully added.`);
+  await sleep();
 };
 
 const addRole = () => {
