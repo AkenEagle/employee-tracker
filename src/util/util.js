@@ -109,9 +109,16 @@ const addRole = async () => {
   const salaryAmount = await inquirer.prompt(salaryQuestion);
 
   // Ask for which department to add this role
-  const departmentQuery = "SELECT name FROM department";
-  const departments = await getResults(departmentQuery);
-  console.log(departments);
+  const departmentQuery = "SELECT * FROM department";
+  const departmentsResults = await getResults(departmentQuery);
+
+  const departments = departmentsResults.map((department) => {
+    return {
+      name: department.name,
+      value: department.id,
+    };
+  });
+
   const departmentQuestion = [
     {
       name: "choice",
@@ -120,16 +127,15 @@ const addRole = async () => {
       choices: departments,
     },
   ];
+
   const department = await inquirer.prompt(departmentQuestion);
-  const departmentIdQuery = `SELECT id FROM department WHERE name = "${department.choice}"`;
-  const departmentId = await getResults(departmentIdQuery);
 
   // Add role in DB
   db.query(
-    `INSERT INTO role (title, salary, department_id) VALUES ("${roleTitle.role}", ${salaryAmount.salary}, ${departmentId[0].id})`
+    `INSERT INTO role (title, salary, department_id) VALUES ("${roleTitle.role}", ${salaryAmount.salary}, ${department.choice})`
   );
   console.log(
-    `Role ${roleTitle.role} with salary ${salaryAmount.salary} added to department ${department.choice}`
+    `Role ${roleTitle.role} with salary ${salaryAmount.salary} added`
   );
   await sleep();
 };
